@@ -39,6 +39,7 @@ export const GroupSchema = z.object({
 export const ConfigSchema = z.object({
   settings: z.object({
     title: z.string(),
+    logo: z.string().optional(),
     callback_url: z.string().optional(),
     callback_secret: z.string().optional(),
     notification_on_down_only: z.boolean().default(false),

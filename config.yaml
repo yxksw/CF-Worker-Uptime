@@ -2,6 +2,7 @@
 
 settings:
   title: "Acofork System Status"
+  logo: "https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0" # Optional: URL to your logo image
   callback_url: ""
   callback_secret: ""
   # If true, only send notifications when status changes to DOWN.
@@ -9,7 +10,7 @@ settings:
   notification_on_down_only: true 
 
 groups:
-  - id: "services"
+  - id: "My Service"
     name: "Services"
     monitors:
       - id: "uptimekuma"
@@ -234,6 +235,79 @@ groups:
           chart: true
           public_link: false
 
+  - id: "major_services"
+    name: "Public Services"
+    monitors:
+      - id: "google"
+        name: "Google"
+        type: "http"
+        url: "https://www.google.com"
+        method: "HEAD"
+        timeout: 5000
+        expected_latency: 500
+        grace_period: 3
+        display:
+          chart: true
+          public_link: true
+        validation:
+          status: 200
+
+      - id: "cloudflare"
+        name: "Cloudflare"
+        type: "http"
+        url: "https://www.cloudflare.com"
+        method: "HEAD"
+        timeout: 5000
+        expected_latency: 500
+        grace_period: 3
+        display:
+          chart: true
+          public_link: true
+        validation:
+          status: 200
+
+      - id: "github"
+        name: "GitHub"
+        type: "http"
+        url: "https://github.com"
+        method: "HEAD"
+        timeout: 5000
+        expected_latency: 500
+        grace_period: 3
+        display:
+          chart: true
+          public_link: true
+        validation:
+          status: 200
+
+      - id: "bing"
+        name: "Bing"
+        type: "http"
+        url: "https://www.bing.com"
+        method: "HEAD"
+        timeout: 5000
+        expected_latency: 500
+        grace_period: 3
+        display:
+          chart: true
+          public_link: true
+        validation:
+          status: 200
+
+      - id: "baidu"
+        name: "Baidu"
+        type: "http"
+        url: "https://www.baidu.com"
+        method: "HEAD"
+        timeout: 5000
+        expected_latency: 500
+        grace_period: 3
+        display:
+          chart: true
+          public_link: true
+        validation:
+          status: 200
+
       - id: "fail_ssh"
         name: "fail_ssh"
         type: "tcp"
@@ -243,3 +317,4 @@ groups:
         display:
           chart: true
           public_link: false
+
