@@ -21,6 +21,34 @@
         <div v-else-if="error" class="text-center text-red-500">{{ error }}</div>
 
         <div v-else class="space-y-8">
+            <!-- Overall Status -->
+            <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                <div v-if="overallStatus === 'UP'" class="flex flex-col items-center">
+                    <div class="bg-green-100 p-4 rounded-full mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">All Systems Operational</h2>
+                </div>
+                <div v-else-if="overallStatus === 'DEGRADED'" class="flex flex-col items-center">
+                    <div class="bg-yellow-100 p-4 rounded-full mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Partial System Outage</h2>
+                </div>
+                <div v-else class="flex flex-col items-center">
+                    <div class="bg-red-100 p-4 rounded-full mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Major System Outage</h2>
+                </div>
+            </div>
+
             <!-- Incidents Section -->
             <div v-if="activeIncidents.length > 0" class="space-y-4">
                 <div v-for="incident in activeIncidents" :key="incident.id" class="rounded-lg shadow-md overflow-hidden border-l-4"
@@ -148,6 +176,7 @@
                 const config = ref({});
                 const statusData = ref([]);
                 const activeIncidents = ref([]);
+                const overallStatus = ref('UP');
                 const loading = ref(true);
                 const error = ref(null);
                 const lastUpdated = ref('');
@@ -304,6 +333,28 @@
                             activeIncidents.value = config.value.incidents;
                         }
 
+                        // Calculate Overall Status
+                        let downCount = 0;
+                        let degradedCount = 0;
+                        let totalCount = 0;
+                        
+                        const exclusionList = config.value.settings?.summary_exclusion || [];
+
+                        statusData.value.forEach(group => {
+                            // Skip excluded groups
+                            if (exclusionList.includes(group.id)) return;
+
+                            group.monitors.forEach(m => {
+                                totalCount++;
+                                if (m.state.status === 'DOWN') downCount++;
+                                else if (m.state.status === 'DEGRADED') degradedCount++;
+                            });
+                        });
+
+                        if (downCount > 0) overallStatus.value = 'DOWN';
+                        else if (degradedCount > 0) overallStatus.value = 'DEGRADED';
+                        else overallStatus.value = 'UP';
+
                         // Update document title
                         if (config.value.settings?.title) {
                             document.title = config.value.settings.title;
@@ -406,6 +457,7 @@
                     config,
                     statusData,
                     activeIncidents,
+                    overallStatus,
                     loading,
                     error,
                     lastUpdated,

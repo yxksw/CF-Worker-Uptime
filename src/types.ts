@@ -76,6 +76,7 @@ export const ConfigSchema = z.object({
     callback_secret: z.string().optional(),
     notification_on_down_only: z.boolean().default(false),
     tags: z.array(TagDefinitionSchema).optional(), // Predefined tags
+    summary_exclusion: z.array(z.string()).optional(), // List of group IDs to exclude from summary
   }),
   monitors: z.array(MonitorSchema).optional(), // Support flat structure if needed, but we use groups
   groups: z.array(GroupSchema),
