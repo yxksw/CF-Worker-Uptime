@@ -61,22 +61,16 @@ settings:
 #     routine_schedule: "Every Sunday 03:00 UTC"
 #     affected_monitors: ["blog"]
     
-  # - id: "incident-001"
-  #   title: "突发故障"
-  #   type: "incident"
-  #   status: "investigating" # investigating, identified, monitoring, resolved
-  #   affected_monitors: ["blog_eo"]
-  #   start_time: "2026-01-04T15:30:00Z"
-  #   updates:
-  #     - timestamp: "2026-01-04T15:30:00Z"
-  #       message: "我们正在调查该问题"
-  #       status: "investigating"
-  #     - timestamp: "2026-01-04T16:00:00Z"
-  #       message: "问题已定位，预计将在2小时后修复"
-  #       status: "identified"
-  #     - timestamp: "2026-01-04T18:00:00Z"
-  #       message: "问题已解决，持续观察中"
-  #       status: "monitoring"
+   - id: "incident-001"
+     title: "DDoS 攻击"
+     type: "incident"
+     status: "investigating" # investigating, identified, monitoring, resolved
+     affected_monitors: ["blog_eo"]
+     start_time: "2026-01-04T15:30:00Z"
+     updates:
+       - timestamp: "2026-01-04T13:26:00Z"
+         message: "有粉丝汇报分流域名国内节点418，核实是遭受了海外主机攻击。可以点击“博客国内节点”尝试访问，该节点不分流，目前访问正常"
+         status: "monitoring"
 
 groups:
   - id: "my_services"
