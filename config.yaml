@@ -1,8 +1,8 @@
 # Uptime Monitor Configuration
 
 settings:
-  title: "Acofork System Status"
-  logo: "https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0" # Optional: URL to your logo image
+  title: "YXK System Status"
+  logo: "https://cn.cravatar.com/avatar/eb7277a11fa4dc00606e73afda41aeeb?=256" # Optional: URL to your logo image
   callback_url: ""
   callback_secret: ""
   # If true, only send notifications when status changes to DOWN.
@@ -13,6 +13,9 @@ settings:
     - id: "zeabur"
       label: "Zeabur"
       color: "#6300FF"
+    - id: "typecho"
+      label: "typecho博客"
+      color: "#F5DD27"
     - id: "eopf"
       label: "EdgeOne Page Function"
       color: "#2563EB"
@@ -67,29 +70,29 @@ incidents:
 #     routine_schedule: "Every Sunday 03:00 UTC"
 #     affected_monitors: ["blog"]
     
-   - id: "incident-001"
-     title: "DDoS 攻击"
-     type: "incident"
-     status: "investigating" # investigating, identified, monitoring, resolved
+   - id: "routine-001"
+     title: "正常监测"
+     type: "routine"
+     status: "monitoring" # investigating, identified, monitoring, resolved
      affected_monitors: ["blog_eo"]
-     start_time: "2026-01-04T12:37:00Z"
+     start_time: "2026-02-16T07:45:00Z"
      updates:
-       - timestamp: "2026-01-04T13:26:00Z"
-         message: "有粉丝汇报分流域名国内节点418，核实是遭受了海外主机攻击。可以点击“博客国内节点”尝试访问，该节点不分流，目前访问正常"
-         status: "monitoring"
-       - timestamp: "2026-01-05T01:40:00Z"
-         message: "我们已采用新的技术手段尝试修复该问题，并已发布更新，持续检测中。所有地区的访客通过统一入口 2x.nz 访问即可得到正常的路由和访问体验"
+      #  - timestamp: "2026-01-04T13:26:00Z"
+      #    message: "有粉丝汇报分流域名国内节点418，核实是遭受了海外主机攻击。可以点击“博客国内节点”尝试访问，该节点不分流，目前访问正常"
+      #    status: "monitoring"
+       - timestamp: "2026-02-16T07:45:00Z"
+         message: "正常监控中~"
          status: "monitoring"
 
 groups:
   - id: "my_services"
     name: "My Services"
     monitors:
-      - id: "uptimekuma"
-        name: "UptimeKuma"
-        tags: [zeabur]
+      - id: "clarity-typecho"
+        name: "Clarity-Typecho-blog"
+        tags: [typecho]
         type: "http"
-        url: "https://acofork-uptime.zeabur.app/status/acofork"
+        url: "https://blog.314926.xyz"
         method: "HEAD"
         timeout: 60000
         expected_latency: 1000
@@ -100,11 +103,11 @@ groups:
         validation:
           status: 200
 
-      - id: "blog_eo"
-        name: "博客国内节点"
-        tags: [eopage]
+      - id: "cofe"
+        name: "Cofe-blog"
+        tags: [vercel]
         type: "http"
-        url: "https://eo-blog.acofork.com/"
+        url: "https://cofe.381359.xyz/"
         method: "HEAD"
         timeout: 60000
         expected_latency: 1000
@@ -115,11 +118,11 @@ groups:
         validation:
           status: 200
 
-      - id: "blog_esa"
-        name: "博客国内节点"
-        tags: [esapage]
+      - id: "umami"
+        name: "Vercel-Umami"
+        tags: [vercel]
         type: "http"
-        url: "https://esa-blog.acofork.com/"
+        url: "https://um.381359.xyz/"
         method: "HEAD"
         timeout: 60000
         expected_latency: 1000
@@ -130,101 +133,11 @@ groups:
         validation:
           status: 200
 
-      - id: "blog_cf"
-        name: "博客海外节点"
-        tags: [cfp]
-        type: "http"
-        url: "https://cf-blog.acofork.com/"
-        method: "HEAD"
-        timeout: 60000
-        expected_latency: 1000
-        grace_period: 3
-        display:
-          chart: true
-          public_link: true
-        validation:
-          status: 200
-
-      - id: "umami_nas"
-        name: "Umami 生产环境"
-        tags: [eo,self]
-        type: "http"
-        url: "https://umami.acofork.com/"
-        method: "HEAD"
-        timeout: 60000
-        expected_latency: 1000
-        grace_period: 3
-        display:
-          chart: true
-          public_link: true
-        validation:
-          status: 200
-
-      - id: "vw_nas"
-        name: "VaultWarden"
-        tags: [eo,self]
-        type: "http"
-        url: "https://vw.acofork.com/"
-        method: "HEAD"
-        timeout: 60000
-        expected_latency: 1000
-        grace_period: 3
-        display:
-          chart: true
-          public_link: true
-        validation:
-          status: 200
-
-      - id: "pan_nas"
-        name: "OpenList"
-        tags: [eo,self]
-        type: "http"
-        url: "https://pan.acofork.com/"
-        method: "GET"
-        timeout: 60000
-        expected_latency: 1000
-        grace_period: 3
-        display:
-          chart: true
-          public_link: true
-        validation:
-          status: 200
-
-      - id: "fnos_nas"
-        name: "飞牛 OS"
-        tags: [eo,self]
-        type: "http"
-        url: "https://nas.acofork.com/"
-        method: "HEAD"
-        timeout: 60000
-        expected_latency: 1000
-        grace_period: 3
-        display:
-          chart: true
-          public_link: true
-        validation:
-          status: 200
-
-      - id: "gh_proxy_eo"
-        name: "Github 代理"
-        tags: [eopf]
-        type: "http"
-        url: "https://gh.072103.xyz/"
-        method: "HEAD"
-        timeout: 60000
-        expected_latency: 1000
-        grace_period: 3
-        display:
-          chart: true
-          public_link: true
-        validation:
-          status: 200
-
-      - id: "gh_proxy_cf"
-        name: "Github 代理"
+      - id: "cf-umami"
+        name: "基于CF的umami"
         tags: [cfw]
         type: "http"
-        url: "https://cf-gh.072103.xyz/"
+        url: "cf-umami-cofe.381359.xyz"
         method: "HEAD"
         timeout: 60000
         expected_latency: 1000
@@ -235,11 +148,11 @@ groups:
         validation:
           status: 200
 
-      - id: "gh_proxy_vercel"
-        name: "Github 代理"
-        tags: [vf]
+      - id: "umami-api"
+        name: "Umami-Cofe的浏览量"
+        tags: [cfw]
         type: "http"
-        url: "https://v-gh.072103.xyz/"
+        url: "https://um-cofe.381359.xyz/"
         method: "HEAD"
         timeout: 60000
         expected_latency: 1000
@@ -250,11 +163,11 @@ groups:
         validation:
           status: 200
 
-      - id: "eopfapi"
-        name: "随机图API"
-        tags: [eopf]
+      - id: "telegram_api"
+        name: "tgtalk"
+        tags: [cfw]
         type: "http"
-        url: "https://eopfapi.acofork.com/pic/"
+        url: "https://tg-api.381359.xyz/"
         method: "HEAD"
         timeout: 60000
         expected_latency: 1000
@@ -265,26 +178,11 @@ groups:
         validation:
           status: 200
 
-      - id: "eo_umami"
-        name: "Umami 测试环境"
-        tags: [eopf]
+      - id: "api-emaction"
+        name: "emaction-bakend"
+        tags: [cfw]
         type: "http"
-        url: "https://eo-umami.acofork.com/"
-        method: "HEAD"
-        timeout: 60000
-        expected_latency: 1000
-        grace_period: 3
-        display:
-          chart: true
-          public_link: true
-        validation:
-          status: 200
-
-      - id: "upload_to_s3"
-        name: "简单上传文件到S3"
-        tags: [eopf]
-        type: "http"
-        url: "https://u.2x.nz/"
+        url: "https://api-emaction.381359.xyz/"
         method: "GET"
         timeout: 60000
         expected_latency: 1000
@@ -295,11 +193,11 @@ groups:
         validation:
           status: 200
 
-      - id: "onedrive_index"
-        name: "OneDrive 公开只读"
-        tags: [vf]
+      - id: "cf-icp"
+        name: "VICP"
+        tags: [cfw]
         type: "http"
-        url: "https://e3.2x.nz/"
+        url: "https://vicp.381359.xyz/"
         method: "HEAD"
         timeout: 60000
         expected_latency: 1000
@@ -310,11 +208,11 @@ groups:
         validation:
           status: 200
 
-      - id: "eo_http"
-        name: "网站安全测试"
-        tags: [eopf]
+      - id: "fc"
+        name: "友链朋友圈"
+        tags: [cfp]
         type: "http"
-        url: "https://http.acofork.com/"
+        url: "https://fc.381359.xyz/"
         method: "HEAD"
         timeout: 60000
         expected_latency: 1000
@@ -325,17 +223,35 @@ groups:
         validation:
           status: 200
 
-      - id: "yxvm_ssh"
-        name: "YxVM SSH"
-        tags: [self]
-        type: "tcp"
-        url: "46.232.60.28:22"
+      - id: "tg-drive"
+        name: "TG 云盘/代理"
+        tags: [cfw]
+        type: "http"
+        url: "https://fx.381359.xyz/"
+        method: "HEAD"
         timeout: 60000
         expected_latency: 1000
         grace_period: 3
         display:
           chart: true
-          public_link: false
+          public_link: true
+        validation:
+          status: 200
+
+      - id: "home"
+        name: "主页"
+        tags: [vercel]
+        type: "http"
+        url: "https://home.381359.xyz/"
+        method: "HEAD"
+        timeout: 60000
+        expected_latency: 1000
+        grace_period: 3
+        display:
+          chart: true
+          public_link: true
+        validation:
+          status: 200
 
   - id: "major_services"
     name: "Public Services"
